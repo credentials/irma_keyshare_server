@@ -34,17 +34,14 @@ public class ProveResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ProofPCommitmentMap getCommitments(List<PublicKeyIdentifier> pkids,
-			@HeaderParam(IRMAHeaders.USERNAME_OLD) String oldUsername,
 			@HeaderParam(IRMAHeaders.AUTHORIZATION_OLD) String oldJwt,
-			@HeaderParam(IRMAHeaders.USERNAME) String username,
 			@HeaderParam(IRMAHeaders.AUTHORIZATION) String jwt)
 			throws InfoException, KeyException {
-		if (username == null) username = oldUsername;
 		if (jwt == null) jwt = oldJwt;
 
-		User u = VerificationResource.authorizeUser(jwt, username);
+		User u = VerificationResource.authorizeUser(jwt);
 
-		logger.info("Answering proof request for: {}", username);
+		logger.info("Answering proof request for: {}", u.getUsername());
 
 		return u.generateCommitments(pkids);
 	}
@@ -54,16 +51,13 @@ public class ProveResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getResponse(BigInteger challenge,
-			@HeaderParam(IRMAHeaders.USERNAME_OLD) String oldUsername,
 			@HeaderParam(IRMAHeaders.AUTHORIZATION_OLD) String oldJwt,
-			@HeaderParam(IRMAHeaders.USERNAME) String username,
 			@HeaderParam(IRMAHeaders.AUTHORIZATION) String jwt) {
-		if (username == null) username = oldUsername;
 		if (jwt == null) jwt = oldJwt;
 
-		User u = VerificationResource.authorizeUser(jwt, username);
+		User u = VerificationResource.authorizeUser(jwt);
 
-		logger.info("Gotten challenge for user: {}", username);
+		logger.info("Gotten challenge for user: {}", u.getUsername());
 
 		ProofP proof = u.buildProofP(challenge);
 		return BaseVerifier.getSignedJWT("ProofP", proof, JWT_SUBJECT);

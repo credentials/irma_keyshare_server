@@ -47,7 +47,8 @@ public class VerificationResource extends BaseVerifier {
 			throw new KeyshareException(KeyshareError.USER_NOT_REGISTERED);
 		}
 
-		if(isAuthorizedJWT(jwt, username, true)) {
+		String authenticatedUser = isAuthorizedJWT(jwt, true);
+		if(username.equals(authenticatedUser)) {
 			return new AuthorizationResult(AuthorizationResult.STATUS_AUTHORIZED, null);
 		} else {
 			return new AuthorizationResult(AuthorizationResult.STATUS_EXPIRED, Arrays.asList(authOptions));

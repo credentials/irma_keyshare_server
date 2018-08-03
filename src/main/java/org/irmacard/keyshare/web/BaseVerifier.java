@@ -79,35 +79,36 @@ public class BaseVerifier {
 	 * When doing a preflight = true check, we artificially say that they
 	 * JWT expires earlier.
 	 */
-	protected static boolean isAuthorizedJWT(String jwt, String username, boolean preflight) {
+	protected static String isAuthorizedJWT(String jwt, boolean preflight) {
 		Claims claims = parseJwt(jwt);
 		if(claims == null) {
-			return false;
+			return null;
 		}
 
 		// Take 2 minutes of extra expiry leeway
 		long now = Calendar.getInstance().getTimeInMillis();
 		long exp = claims.get("exp", Date.class).getTime();
 		if(preflight && exp - now < 120 * 1000) {
-			return false;
+			return null;
 		}
 
+		String username = claims.get("user_id", String.class);
 		User u = Users.getUser(username);
 		if(u == null) {
 			logger.warn("Funny, we have a claim for a non-existing user {}", username);
-			return false;
+			return null;
 		}
 
-		String user_id = claims.get("user_id", String.class);
-		return user_id.equals(username);
+		return username;
 	}
 
-	public static boolean isAuthorizedJWT(String jwt, String username) {
-		return isAuthorizedJWT(jwt, username, false);
+	public static String isAuthorizedJWT(String jwt) {
+		return isAuthorizedJWT(jwt, false);
 	}
 
-	public static User authorizeUser(String jwt, String username) {
-		if(!isAuthorizedJWT(jwt, username)) {
+	public static User authorizeUser(String jwt) {
+		String username = isAuthorizedJWT(jwt);
+		if(username == null) {
 			throw new KeyshareException(KeyshareError.UNAUTHORIZED);
 		}
 
