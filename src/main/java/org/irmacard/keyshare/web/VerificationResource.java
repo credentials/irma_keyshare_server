@@ -28,8 +28,13 @@ public class VerificationResource extends BaseVerifier {
 	@POST
 	@Path("/isAuthorized")
 	@Produces(MediaType.APPLICATION_JSON)
-	public AuthorizationResult isAuthorized(@HeaderParam(IRMAHeaders.USERNAME) String username,
+	public AuthorizationResult isAuthorized(@HeaderParam(IRMAHeaders.USERNAME_OLD) String oldUsername,
+			@HeaderParam(IRMAHeaders.AUTHORIZATION_OLD) String oldJwt,
+			@HeaderParam(IRMAHeaders.USERNAME) String username,
 			@HeaderParam(IRMAHeaders.AUTHORIZATION) String jwt) {
+		if (username == null) username = oldUsername;
+		if (jwt == null) jwt = oldJwt;
+
 		logger.info("Is authorized called for: {}", username);
 
 		User u = Users.getValidUser(username);

@@ -41,10 +41,11 @@ import org.irmacard.api.common.util.IssuerIdentifierSerializer;
 import org.irmacard.api.common.util.PublicKeyIdentifierSerializer;
 import org.irmacard.credentials.info.IssuerIdentifier;
 import org.irmacard.credentials.info.PublicKeyIdentifier;
+import org.irmacard.keyshare.common.IRMAHeaders;
 import org.irmacard.keyshare.common.exceptions.KeyshareError;
 import org.irmacard.keyshare.common.exceptions.KeyshareException;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -64,20 +65,25 @@ import java.lang.reflect.Type;
 public class GsonJerseyProvider implements MessageBodyWriter<Object>, MessageBodyReader<Object> {
 	private static final String UTF_8 = "UTF-8";
 
-	private static final Gson gson1;
-	private static final Gson gson2;
+	private static final Gson oldGson;
+	private static final Gson newGson;
 
 	@Context
-	private ServletConfig servletConfig;
+	private HttpServletRequest servletRequest;
 
 	static {
-		gson1 = GsonUtil.getGson();
+		oldGson = GsonUtil.getGson();
 
 		// TODO move these to GsonUtil when old protocol is deprecated
 		GsonUtilBuilder builder = new GsonUtilBuilder();
 		builder.addTypeAdapter(IssuerIdentifier.class, new IssuerIdentifierSerializer());
 		builder.addTypeAdapter(PublicKeyIdentifier.class, new PublicKeyIdentifierSerializer());
-		gson2 = builder.create();
+		newGson = builder.create();
+	}
+
+	private Gson getGson() {
+		String version = servletRequest.getHeader(IRMAHeaders.VERSION);
+		return "2".equals(version) ? newGson : oldGson;
 	}
 
 	@Override
@@ -92,13 +98,7 @@ public class GsonJerseyProvider implements MessageBodyWriter<Object>, MessageBod
 						   MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException {
 		try (InputStreamReader streamReader = new InputStreamReader(entityStream, UTF_8)) {
-			if (servletConfig.getServletName().equals(KeyshareApplication.VERSION2)) {
-				return gson2.fromJson(streamReader, genericType);
-			} else {
-				Object o = gson1.fromJson(streamReader, genericType);
-				System.out.println(gson1.toJson(o, genericType));
-				return o;
-			}
+			return getGson().fromJson(streamReader, genericType);
 		} catch (JsonParseException e) {
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, e.getMessage());
 		}
@@ -123,12 +123,7 @@ public class GsonJerseyProvider implements MessageBodyWriter<Object>, MessageBod
 						OutputStream entityStream) throws IOException,
 			WebApplicationException {
 		try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8)) {
-			if (servletConfig.getServletName().equals(KeyshareApplication.VERSION2)) {
-				gson2.toJson(object, genericType, writer);
-			} else {
-				gson1.toJson(object, genericType, writer);
-				System.out.println(gson1.toJson(object, genericType));
-			}
+			getGson().toJson(object, genericType, writer);
 		}
 	}
 }

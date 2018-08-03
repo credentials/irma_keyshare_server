@@ -59,8 +59,6 @@ import java.util.concurrent.TimeUnit;
 public class KeyshareApplication extends ResourceConfig {
     private static Logger logger = LoggerFactory.getLogger(KeyshareApplication.class);
 
-    public static final String VERSION2 = "irma_keyshare2_server";
-
     public KeyshareApplication() {
         KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
 
