@@ -80,6 +80,10 @@ public class BaseVerifier {
 	 * JWT expires earlier.
 	 */
 	protected static String isAuthorizedJWT(String jwt, boolean preflight) {
+		if (jwt == null)
+			return null;
+		if (jwt.startsWith("Bearer "))
+			jwt = jwt.substring("Bearer ".length());
 		Claims claims = parseJwt(jwt);
 		if(claims == null) {
 			return null;

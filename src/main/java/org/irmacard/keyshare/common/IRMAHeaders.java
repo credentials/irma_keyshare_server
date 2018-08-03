@@ -5,7 +5,7 @@ public class IRMAHeaders {
 	public static final String USERNAME_OLD = "IRMA_Username";
 	public static final String AUTHORIZATION_OLD = "IRMA_Authorization";
 
+	public static final String AUTHORIZATION = "Authorization";
 	public static final String USERNAME = "X-IRMA-Keyshare-Username";
-	public static final String AUTHORIZATION = "X-IRMA-Keyshare-Authorization";
 	public static final String VERSION = "X-IRMA-Keyshare-ProtocolVersion";
 }
