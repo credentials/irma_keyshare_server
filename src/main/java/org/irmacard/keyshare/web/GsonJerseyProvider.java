@@ -35,10 +35,7 @@ package org.irmacard.keyshare.web;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import org.irmacard.api.common.util.GsonUtil;
-import org.irmacard.api.common.util.GsonUtilBuilder;
-import org.irmacard.api.common.util.IssuerIdentifierSerializer;
-import org.irmacard.api.common.util.PublicKeyIdentifierSerializer;
+import org.irmacard.api.common.util.*;
 import org.irmacard.credentials.info.IssuerIdentifier;
 import org.irmacard.credentials.info.PublicKeyIdentifier;
 import org.irmacard.keyshare.common.IRMAHeaders;
@@ -58,6 +55,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
@@ -78,6 +76,7 @@ public class GsonJerseyProvider implements MessageBodyWriter<Object>, MessageBod
 		GsonUtilBuilder builder = new GsonUtilBuilder();
 		builder.addTypeAdapter(IssuerIdentifier.class, new IssuerIdentifierSerializer());
 		builder.addTypeAdapter(PublicKeyIdentifier.class, new PublicKeyIdentifierSerializer());
+		builder.addTypeAdapter(BigInteger.class, new Base64BigIntegerSerializer());
 		newGson = builder.create();
 	}
 
