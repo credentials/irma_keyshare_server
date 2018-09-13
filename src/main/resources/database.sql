@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users
     enrolled boolean,
     enabled boolean,
     email_issued boolean,
+    language varchar(256),
     INDEX (`username`)
 );
 -- INSERT INTO users VALUES (1, 'q@b.c', 'foobar', '1234-1234', '1234', 0, NULL, true, false);

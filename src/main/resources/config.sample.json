@@ -49,6 +49,12 @@
     "login_credential": "mijnirma",
     "login_attribute": "email",
 
+    // URL to MyIRMA web client
+    "webclient_url": {
+        "en": "",
+        "nl": ""
+    },
+
     // URL to API server to start authentication sessions with
     "apiserver_url": "",
 

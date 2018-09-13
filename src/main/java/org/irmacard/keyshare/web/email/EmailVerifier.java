@@ -42,7 +42,7 @@ public class EmailVerifier {
 		if (!callback.startsWith("http://") && !callback.startsWith("https://")) {
 			if (!callback.startsWith("/")) callback = "/" + callback;
 			if (!callback.endsWith("/")) callback += "/";
-			callback = KeyshareConfiguration.getInstance().getWebclientUrl() + callback;
+			callback = KeyshareConfiguration.getInstance().getWebclientUrl(u.getLanguage()) + callback;
 		}
 
 		EmailVerificationRecord record = new EmailVerificationRecord(email, timeout, validity);
