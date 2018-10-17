@@ -362,7 +362,7 @@ public class WebClientResource {
 		loginUser(u);
 		Historian.getInstance().recordLogin(true, true, conf.getClientIp(servletRequest));
 		return Response
-				.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl()))
+				.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl(u.getLanguage())))
 				.cookie(getSessionCookie(u, newCookie("enroll", "true")))
 				.build();
 	}
@@ -439,7 +439,7 @@ public class WebClientResource {
 
 		Response.ResponseBuilder builder = null;
 		if (!isWebclient)
-			builder = Response.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl()));
+			builder = Response.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl(u.getLanguage())));
 		else {
 			if (success)
 				builder = Response.ok("OK");
@@ -456,7 +456,7 @@ public class WebClientResource {
 
 	private Response getMultipleCandidatesRedirectResponse(String token) throws URISyntaxException {
 		return Response
-				.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl()))
+				.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl("")))
 				.cookie(newCookie("token", token))
 				.build();
 	}

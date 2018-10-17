@@ -50,13 +50,15 @@ public class User extends Model {
 	public static final String SESSION_FIELD = "sessionToken";
 	public static final String PINCOUNTER_FIELD = "pincounter";
 	public static final String PINBLOCK_DATE = "pinblockDate";
+	public static final String LANGUAGE_FIELD = "language";
 
-	public User(String username, String password, String pin, BigInteger secret, PublicKey publicKey) {
+	public User(String username, String password, String pin, BigInteger secret, PublicKey publicKey, String language) {
 		if (!checkInput(pin, publicKey))
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT);
 
 		setString(USERNAME_FIELD, username);
 		setString(PASSWORD_FIELD, password);
+		setString(LANGUAGE_FIELD, language);
 		setString(PIN_FIELD, pin);
 		setInteger(PINCOUNTER_FIELD, 0);
 		setString(KEYSHARE_FIELD, secret.toString(16));
@@ -76,12 +78,12 @@ public class User extends Model {
 				&& pin.length() > 44; // Length of SHA256 in Base64 plus =\n
 	}
 
-	public User(String username, String password, String pin, PublicKey publicKey) {
-		this(username, password, pin, new BigInteger(255, new SecureRandom()), publicKey);
+	public User(String username, String password, String pin, PublicKey publicKey, String language) {
+		this(username, password, pin, new BigInteger(255, new SecureRandom()), publicKey, language);
 	}
 
 	public User(UserLoginMessage user) {
-		this(user.getUsername(), user.getPassword(), user.getPin(), user.getPublicKey());
+		this(user.getUsername(), user.getPassword(), user.getPin(), user.getPublicKey(), user.getLanguage());
 	}
 
 	public User() {}
@@ -121,6 +123,13 @@ public class User extends Model {
 
 	public String getUsername() {
 		return getString(USERNAME_FIELD);
+	}
+
+	public String getLanguage() {
+		String result = getString(LANGUAGE_FIELD);
+		if (result == null)
+			return "";
+		return result;
 	}
 
 	public int getID() {
