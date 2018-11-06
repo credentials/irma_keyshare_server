@@ -227,6 +227,7 @@ public class User extends Model {
 
 		// Ensure that we can only answer one challenge (lest we totally break security)
 		pbuilder = null;
+		builders.remove(getID());
 		addLog(LogEntryType.IRMA_SESSION);
 
 		return proof;
