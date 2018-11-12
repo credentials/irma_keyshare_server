@@ -64,36 +64,6 @@ public class WebClientResource {
 		return true;
 	}
 
-	// TODO remove this when deprecating old registration flow
-	@POST @Path("/users/selfenroll")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@RateLimit
-	public UserMessage userSelfEnroll(UserLoginMessage user) throws AddressException {
-		User u = Users.getUser(user.getUsername());
-		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
-		if (u == null || !u.isEnrolled()) {
-			Historian.getInstance().recordRegistration(false, conf.getClientIp(servletRequest));
-			u = Users.register(user);
-			EmailVerifier.verifyEmail(
-					u,
-					u.getUsername(),
-					conf.getRegisterEmailSubject(),
-					conf.getRegisterEmailBody(),
-					conf.getUrl() + "/web/enroll/"
-			);
-		} else {
-			Historian.getInstance().recordRegistration(true, conf.getClientIp(servletRequest));
-			EmailSender.send(
-					u.getUsername(),
-					conf.getDoubleRegistrationEmailSubject(),
-					conf.getDoubleRegistrationEmailBody()
-			);
-		}
-
-		return new UserMessage();
-	}
-
 	@GET @Path("/users/auth-qr")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

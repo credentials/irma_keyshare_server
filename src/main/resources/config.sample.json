@@ -1,65 +1,62 @@
 {
     // A sample configuration file.
 
-    // Expiry for the pin JWT (i.e., how long a user stays authenticated
-    // without having to enter her pin)
-    "pinExpiry": 900,
-
-    // When events_webhook_uri is set to an URI, the server will periodically
-    // send an HTTP POST request to it with details like to login attempts.
-    // See github.com/privacybydesign/irma-historyd for an example of a
-    // webserver collecting the data send out by this webhook.
-    "events_webhook_uri": null,
-
-    // Optional basic HTTP authorization token to be included in the
-    // webhook POST request set by events_webook_uri
-    "events_webhook_authorizationToken": null,
-
-    // If set, periodically checks schememanager at the given URI and
-    // downloads updates.  If set, you also need to provide the public key
-    // of the schememanager in schemeManager.pk.pem.
-    "schemeManager_update_uri": null,
-
-    // Optional header that stores the client IP address.
-    // I.e. "X-Forwarded-For"
-    "client_ip_header": "X-Forwarded-For",
-
-    // Name of this keyshare server
-    "server_name": "keyshare_server",
-
-    // Name of the scheme manager (must be present in irma_configuration)
+    // Name of the IRMA scheme that this keyshare server falls under
+    // The scheme must be present in irma_configuration in the configuration folder 
     "scheme_manager": "test",
 
-    // Name of from address that sends mail
-    "mail_from": "test@test.com",
+    // Issuer, credential names, and attribute names for issuing
+    // These example values, together with scheme_manager, point to
+    // test.test.mijnirma.email for the MyIRMA attribute associated to an account on this keyshare server
+    // test.test.email.email for the email attribute if and after the email account has been verified
+    "issuer": "test",
+    "login_credential": "mijnirma",
+    "login_attribute": "email",
+    "email_credential": "email",
+    "email_attribute": "email",
 
-    // SMTP mail settings, defaulting to mailcatcher https://mailcatcher.me/
-    "mail_host": "127.0.0.1",
+    // URL and public key of the API server that issues and verifies IRMA attributes for this keyshare server
+    // by irma_mobile during registrations and by the webclient
+    "apiserver_url": "",
+    "apiserver_publickey": "apiserver.der",
+
+    // For each rate-limited endpoint of the API that the server exposes, a given IP address
+    // can access the endpoind once every x seconds.
+    // 0 disables rate limiting.
+    "rate_limit": 3,
+
+    // JWT issuer name and human-readable name (shown to user in session requests) of this keyshare server
+    "server_name": "keyshare_server",
+    "human_readable_name": "",
+    // Filenames in configuration directory of the private and public keys for signing and verifying JWTs
+    "jwt_privatekey": "sk.der",
+    "jwt_publickey": "pk.der",
+
+    // SMTP server username and password for registration emails
+    "mail_user": "",
+    "mail_password": "",
+    "mail_from": "test@test.com", // From address in outgoing emails
+    "mail_host": "127.0.0.1",     // SMTP mail settings, defaulting to mailcatcher https://mailcatcher.me/
     "mail_port": "1025",
     "mail_starttls_required": "false",
 
-    // Check if users have verified their e-mail address and aren't blocked
-    // This MUST be enabled for production use, but can be disabled for unit tests like those from irmago
-    "check_user_enrolled": true,
+    // URL to this server for verification links in emails
+    "url": "http://localhost:8080/irma_keyshare_server/api/v1",
 
-    // Settings for attribute issueing
-    "issuer": "test",
-    "email_credential": "email",
-    "email_attribute": "email",
-    "login_credential": "mijnirma",
-    "login_attribute": "email",
+    // If set, periodically checks schememanager at the given URI and
+    // downloads updates.  If set, you also need to provide the public key
+    // of the schememanager in schemeManager.pk.pem in your configuration directory
+    "schemeManager_update_uri": null,
+    "schemeManager_publickey": "schemeManager.pk.pem",
+
+    // Default language to use if a translatable configuration option below misses the requested language
+    "defaultLanguage": "en",
 
     // URL to MyIRMA web client
     "webclient_url": {
         "en": "",
         "nl": ""
     },
-
-    // URL to API server to start authentication sessions with
-    "apiserver_url": "",
-
-    // URL to this server for verification links in emails
-    "url": "http://localhost:8080/irma_keyshare_server/api/v1",
 
     // Login and registration emails
     "login_email_subject": {
@@ -75,7 +72,28 @@
         "nl": "Bevestig MijnIRMA e-mailadres"
     },
     "confirm_email_body": {
-        "en": "Dear IRMA user,\n\nWelcom to IRMA!",
-        "nl": "Beste IRMA-gebruiker,\n\nWelkom bij IRMA!"
-    }
+        "en": "Dear IRMA user,\n\nWelcome to IRMA! Your have successfully opened your IRMA account. Confirm your email address by clicking on the link below, in order to receive this e-mailadres as an attribute in your IRMA-app. Additionally, you can then login on MyIRMA and block your attriutes, in case you lose your phone.",
+        "nl": "Beste IRMA-gebruiker,\n\nWelkom bij IRMA! U heeft uw IRMA account geopend. Bevestig uw e-mailadres door op onderstaande link te klikken. U ontvangt dit e-mailadres dan als attribuut in uw IRMA-app. U kunt dan bovendien met dit e-mailadres op MijnIRMA inloggen om uw attributen te blokkeren, mocht u uw telefoon kwijtraken."
+    },
+
+    // Expiry for the pin JWT (i.e., how long a user stays authenticated
+    // without having to enter her pin)
+    "pinExpiry": 900,
+
+    // When events_webhook_uri is set to an URI, the server will periodically
+    // send an HTTP POST request to it with details like to login attempts.
+    // See github.com/privacybydesign/irma-historyd for an example of a
+    // webserver collecting the data send out by this webhook.
+    "events_webhook_uri": null,
+
+    // Optional basic HTTP authorization token to be included in the
+    // webhook POST request set by events_webook_uri
+    "events_webhook_authorizationToken": null,
+
+    // After this many minutes, webclient browser sessions expire
+    "session_timeout": 30,
+
+    // Optional header that stores the client IP address, e.g. "X-Forwarded-For"
+    // If absent the client IP making the HTTP connection is used
+    "client_ip_header": "X-Forwarded-For"
 }

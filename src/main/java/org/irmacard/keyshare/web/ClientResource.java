@@ -49,7 +49,7 @@ public class ClientResource {
 
 		String lang = userData.getLanguage();
 		userData.setUsername(generateUsername());
-		User u = Users.register(userData, true);
+		User u = Users.register(userData);
 
 		String email = userData.getEmail();
 		if (email != null && email.length() > 0) {
