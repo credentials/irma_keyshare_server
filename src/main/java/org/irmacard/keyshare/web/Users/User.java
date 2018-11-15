@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,7 +180,7 @@ public class User extends Model {
 	public boolean checkAndCountPin(String pin) {
 		int pinCounter = getPinCounter();
 
-		boolean correct = getPIN().equals(pin);
+		boolean correct = MessageDigest.isEqual(getPIN().getBytes(), pin.getBytes());
 		pinCounter++;
 		setPinCounter(pinCounter);
 
@@ -226,6 +227,7 @@ public class User extends Model {
 
 		// Ensure that we can only answer one challenge (lest we totally break security)
 		pbuilder = null;
+		builders.remove(getID());
 		addLog(LogEntryType.IRMA_SESSION);
 
 		return proof;

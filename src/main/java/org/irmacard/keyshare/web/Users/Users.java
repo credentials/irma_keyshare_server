@@ -21,7 +21,7 @@ public class Users {
 	static private SecureRandom srnd = new SecureRandom();
 
 	@NotNull
-	static public User register(@NotNull UserLoginMessage userData, boolean isEnrolled) {
+	static public User register(@NotNull UserLoginMessage userData) {
 		logger.info("Registering user with username {}", userData.getUsername());
 
 		User u = getUser(userData.getUsername());
@@ -31,15 +31,10 @@ public class Users {
 		}
 
 		u = new User(userData);
-		u.setEnrolled(isEnrolled);
+		u.setEnrolled(true);
 		u.saveIt();
 
 		return u;
-	}
-
-	@NotNull
-	static public User register(@NotNull UserLoginMessage login) {
-		return register(login, false);
 	}
 
 	static public UserSession getSessionForUser(User u) {

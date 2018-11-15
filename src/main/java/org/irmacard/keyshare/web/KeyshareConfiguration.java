@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.*;
+import java.util.Map;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfiguration> {
@@ -48,11 +48,6 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	private String email_attribute = "";
 	private String login_credential = "";
 	private String login_attribute = "";
-
-	private String register_email_subject = "Verify your email address";
-	private String register_email_body = "To finish registering to the keyshare server, please click on the link below.";
-	private String double_registration_email_subject = "Someone tried to re-register this email address";
-	private String double_registration_email_body = "Someone tried to re-register this email address. Was this you? If so, you first need to unregister. If this wasn't you, you can ignore this message.";
 
 	private String defaultLanguage = "en";
 	private Map<String, String> login_email_subject;
@@ -151,22 +146,6 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	public String getLoginAttribute() {
 		return login_attribute;
-	}
-
-	public String getRegisterEmailSubject() {
-		return register_email_subject;
-	}
-
-	public String getRegisterEmailBody() {
-		return register_email_body;
-	}
-
-	public String getDoubleRegistrationEmailSubject() {
-		return double_registration_email_subject;
-	}
-
-	public String getDoubleRegistrationEmailBody() {
-		return double_registration_email_body;
 	}
 
 	public String getLoginEmailSubject(String lang) {
