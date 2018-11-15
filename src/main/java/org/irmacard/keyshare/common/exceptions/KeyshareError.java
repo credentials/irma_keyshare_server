@@ -8,8 +8,8 @@ public enum KeyshareError {
 	// IdP-specific errors
 	// MALFORMED_ISSUER_REQUEST(400, "Malformed issuer request"),
 
-	// SP-specific errors
-	MALFORMED_VERIFIER_REQUEST(400, "Malformed verification request"),
+	// Keyshare-specific errors
+	MALFORMED_KEYSHARE_REQUEST(400, "Malformed keyshare request"),
 
 	// SP, IdP, or token errors
 	MALFORMED_INPUT(400, "Input could not be parsed"),

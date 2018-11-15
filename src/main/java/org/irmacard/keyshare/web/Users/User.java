@@ -74,7 +74,7 @@ public class User extends Model {
 	}
 
 	private boolean checkInput(String pin, PublicKey publicKey) {
-		return publicKey != null && publicKey.getN() != null && publicKey.getG() != null
+		return (publicKey == null || (publicKey.getN() != null && publicKey.getG() != null))
 				&& pin != null
 				&& pin.length() > 44; // Length of SHA256 in Base64 plus =\n
 	}
@@ -221,6 +221,10 @@ public class User extends Model {
 		pbuilder = builders.get(getID());
 		if(pbuilder == null) {
 			throw new KeyshareException(KeyshareError.UNEXPECTED_REQUEST);
+		}
+
+		if (challenge.bitLength() > 256 && (getPublicKey() == null || challenge.bitLength() <=2000)) {
+			throw new KeyshareException(KeyshareError.MALFORMED_KEYSHARE_REQUEST);
 		}
 
 		ProofP proof = pbuilder.build(challenge, getPublicKey());
