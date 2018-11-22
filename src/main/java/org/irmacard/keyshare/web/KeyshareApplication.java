@@ -110,12 +110,7 @@ public class KeyshareApplication extends ResourceConfig {
 
     private void loadOrUpdateIrmaConfiguration(boolean initial) {
         KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
-        URI CORE_LOCATION;
-        try {
-            CORE_LOCATION = KeyshareApplication.class.getClassLoader().getResource("/irma_configuration/").toURI();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        URI CORE_LOCATION = KeyshareConfiguration.getConfigurationDirectory().resolve("irma_configuration/");
         boolean updated = false;
 
         if (conf.schemeManager_update_uri != null) {
