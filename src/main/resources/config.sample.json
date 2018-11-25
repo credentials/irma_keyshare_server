@@ -3,13 +3,13 @@
 
     // Name of the IRMA scheme that this keyshare server falls under
     // The scheme must be present in irma_configuration in the configuration folder 
-    "scheme_manager": "test",
+    "scheme_manager": "pbdf",
 
     // Issuer, credential names, and attribute names for issuing
     // These example values, together with scheme_manager, point to
     // test.test.mijnirma.email for the MyIRMA attribute associated to an account on this keyshare server
     // test.test.email.email for the email attribute if and after the email account has been verified
-    "issuer": "test",
+    "issuer": "pbdf",
     "login_credential": "mijnirma",
     "login_attribute": "email",
     "email_credential": "email",
@@ -17,7 +17,7 @@
 
     // URL and public key of the API server that issues and verifies IRMA attributes for this keyshare server
     // by irma_mobile during registrations and by the webclient
-    "apiserver_url": "",
+    "apiserver_url": "http://localhost:8088/",
     "apiserver_publickey": "apiserver.der",
 
     // For each rate-limited endpoint of the API that the server exposes, a given IP address
