@@ -78,7 +78,7 @@ public class KeyshareApplication extends ResourceConfig {
         register(GsonJerseyProvider.class);
 
         // register exception handler, for converting and then returning exceptions as JSON output
-        register(KeyshareExceptionMapper.class);
+        register(new KeyshareExceptionMapper());
 
         // Base verification class for testing token authorizations
         register(VerificationResource.class);
@@ -140,7 +140,7 @@ public class KeyshareApplication extends ResourceConfig {
     public static void openDatabase() {
         if(!Base.hasConnection()) {
             logger.warn("Opening database connection");
-            Base.open("java:comp/env/jdbc/irma_keyshare");
+            Base.open(KeyshareConfiguration.getInstance().getDatabaseJndi());
         }
     }
 
