@@ -13,6 +13,7 @@ import java.io.IOException;
 public class DatabaseRequestFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
+		requestContext.setProperty("databaseOpen", true);
 		KeyshareApplication.openDatabase();
 	}
 }

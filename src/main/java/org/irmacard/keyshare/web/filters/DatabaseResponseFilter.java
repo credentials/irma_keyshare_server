@@ -9,6 +9,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 public class DatabaseResponseFilter implements ContainerResponseFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-		KeyshareApplication.closeDatabase();
+		if (requestContext.getProperty("databaseOpen") != null)
+			KeyshareApplication.closeDatabase();
 	}
 }
