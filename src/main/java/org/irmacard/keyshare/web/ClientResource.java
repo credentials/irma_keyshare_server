@@ -91,8 +91,9 @@ public class ClientResource {
 		);
 		try {
 			return ApiClient.createApiSession(
-					KeyshareConfiguration.getInstance().getApiServerUrl() + "irma_api_server/api/v2/issue/",
-					jwt
+					KeyshareConfiguration.getInstance().getApiServerUrl(),
+					jwt,
+					KeyshareConfiguration.getInstance().goIrmaServer()
 			);
 		} catch (ApiException e) {
 			throw e;

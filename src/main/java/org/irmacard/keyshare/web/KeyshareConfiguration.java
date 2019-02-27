@@ -66,6 +66,8 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	// For postgres, use openejb:Resource/irma_keyshare
 	private String database_jndi = "java:comp/env/jdbc/irma_keyshare"; // For MySQL
 
+	private boolean go_irma_server = false;
+
 
 	private String apiserver_publickey = "apiserver.der";
 	private String schemeManager_publickey = "schemeManager.pk.pem";
@@ -260,5 +262,9 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	public String getDatabaseJndi() {
 		return database_jndi;
+	}
+
+	public boolean goIrmaServer() {
+		return go_irma_server;
 	}
 }
