@@ -1,8 +1,11 @@
 CREATE DATABASE irma;
+\connect irma;
+CREATE SCHEMA irma;
+
 CREATE USER irma WITH ENCRYPTED PASSWORD 'changeme';
 
 -- DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE IF NOT EXISTS irma.users
 (
     id serial PRIMARY KEY,
     username varchar(128),
@@ -20,20 +23,20 @@ CREATE TABLE IF NOT EXISTS users
     language varchar(256)
 );
 CREATE UNIQUE INDEX username_index ON users (username);
-GRANT SELECT, INSERT, UPDATE, DELETE ON users TO irma;
+GRANT ALL PRIVILEGES ON TABLE irma.users TO irma;
 
 -- DROP TABLE IF EXISTS email_addresses;
-CREATE TABLE IF NOT EXISTS email_addresses
+CREATE TABLE IF NOT EXISTS irma.email_addresses
 (
     id serial PRIMARY KEY,
     user_id int,
     emailAddress varchar(128)
 );
 CREATE UNIQUE INDEX emailAddress_index ON email_addresses (emailAddress);
-GRANT SELECT, INSERT, UPDATE, DELETE ON email_addresses TO irma;
+GRANT ALL PRIVILEGES ON TABLE irma.email_addresses TO irma;
 
 -- DROP TABLE IF EXISTS log_entry_records;
-CREATE TABLE IF NOT EXISTS log_entry_records
+CREATE TABLE IF NOT EXISTS irma.log_entry_records
 (
     id serial PRIMARY KEY,
     time bigint,
@@ -41,10 +44,10 @@ CREATE TABLE IF NOT EXISTS log_entry_records
     param int,
     user_id int
 );
-GRANT SELECT, INSERT, UPDATE, DELETE ON log_entry_records TO irma;
+GRANT ALL PRIVILEGES ON TABLE irma.log_entry_records TO irma;
 
 -- DROP TABLE IF EXISTS email_verification_records;
-CREATE TABLE IF NOT EXISTS email_verification_records
+CREATE TABLE IF NOT EXISTS irma.email_verification_records
 (
     id serial PRIMARY KEY,
     email varchar(256) NOT NULL,
@@ -55,4 +58,6 @@ CREATE TABLE IF NOT EXISTS email_verification_records
     time_verified bigint,
     user_id int
 );
-GRANT SELECT, INSERT, UPDATE, DELETE ON email_verification_records TO irma;
+GRANT ALL PRIVILEGES ON TABLE irma.email_verification_records TO irma;
+
+GRANT ALL ON ALL SEQUENCES IN SCHEMA irma TO irma;
