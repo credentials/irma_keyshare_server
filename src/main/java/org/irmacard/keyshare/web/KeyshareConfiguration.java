@@ -22,6 +22,7 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 		BaseConfiguration.confDirEnvironmentVarName = "IRMA_KEYSHARE_CONF";
 		BaseConfiguration.logger = KeyshareConfiguration.logger;
 		BaseConfiguration.printOnLoad = true;
+		BaseConfiguration.confDirName = "irma_keyshare_server";
 	}
 
 	private String server_name = "IRMATestCloud";
