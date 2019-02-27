@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS irma.users
     email_issued boolean,
     language varchar(256)
 );
-CREATE UNIQUE INDEX username_index ON users (username);
+CREATE UNIQUE INDEX username_index ON irma.users (username);
 GRANT ALL PRIVILEGES ON TABLE irma.users TO irma;
 
 -- DROP TABLE IF EXISTS email_addresses;
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS irma.email_addresses
     user_id int,
     emailAddress varchar(128)
 );
-CREATE UNIQUE INDEX emailAddress_index ON email_addresses (emailAddress);
+CREATE UNIQUE INDEX emailAddress_index ON irma.email_addresses (emailAddress);
 GRANT ALL PRIVILEGES ON TABLE irma.email_addresses TO irma;
 
 -- DROP TABLE IF EXISTS log_entry_records;
