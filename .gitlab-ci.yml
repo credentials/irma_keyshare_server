@@ -1,0 +1,30 @@
+image: privacybydesign/jdk8:latest
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+stages:
+  - test
+  - build
+
+before_script:
+  - set -euxo pipefail
+  - export GRADLE_USER_HOME="$(pwd)/.gradle"
+
+check:
+  stage: test
+  script:
+    - gradle check
+
+war:
+  stage: build
+  artifacts:
+    paths:
+      - irma_keyshare_server.war
+  script:
+    - gradle clean
+    - gradle build
+    - mv ./build/libs/irma_keyshare_server.war ./
