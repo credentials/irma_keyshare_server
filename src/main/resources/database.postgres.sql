@@ -3,6 +3,7 @@ CREATE DATABASE irma;
 CREATE SCHEMA irma;
 
 CREATE USER irma WITH ENCRYPTED PASSWORD 'changeme';
+GRANT USAGE ON SCHEMA irma TO irma;
 
 -- DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS irma.users
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS irma.email_addresses
     user_id int,
     emailAddress varchar(128)
 );
-CREATE UNIQUE INDEX emailAddress_index ON irma.email_addresses (emailAddress);
+CREATE INDEX emailAddress_index ON irma.email_addresses (emailAddress);
 GRANT ALL PRIVILEGES ON TABLE irma.email_addresses TO irma;
 
 -- DROP TABLE IF EXISTS log_entry_records;
