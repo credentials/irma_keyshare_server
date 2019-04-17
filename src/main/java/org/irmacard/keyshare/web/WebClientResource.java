@@ -80,6 +80,9 @@ public class WebClientResource {
 	public String getLoginDisclosureJwt() {
 		AttributeDisjunctionList list = new AttributeDisjunctionList(1);
 		list.add(new AttributeDisjunction("Username", getLoginAttributeIdentifier()));
+		for (String altLoginAttribute : KeyshareConfiguration.getInstance().getAltLoginAttributes()) {
+			list.get(0).add(new AttributeIdentifier(altLoginAttribute));
+		}
 		return ApiClient.getDisclosureJWT(
 				list,
 				KeyshareConfiguration.getInstance().getServerName(),
@@ -93,6 +96,9 @@ public class WebClientResource {
 		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
 		AttributeDisjunctionList list = new AttributeDisjunctionList(1);
 		list.add(new AttributeDisjunction("Email address", getEmailAttributeIdentifier()));
+		for (String altEmailAttribute : KeyshareConfiguration.getInstance().getAltEmailAttributes()) {
+			list.get(0).add(new AttributeIdentifier(altEmailAttribute));
+		}
 		return ApiClient.getDisclosureJWT(
 				list,
 				KeyshareConfiguration.getInstance().getServerName(),
@@ -145,8 +151,20 @@ public class WebClientResource {
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
 		}
 
+		String username = attrs.get(getLoginAttributeIdentifier());
+		for (String altLoginAttribute : KeyshareConfiguration.getInstance().getAltLoginAttributes()) {
+			if (username == null) {
+				username = attrs.get(new AttributeIdentifier(altLoginAttribute));
+			}
+		}
+
+		if (username == null) {
+			Historian.getInstance().recordLogin(false, false, conf.getClientIp(servletRequest));
+			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
+		}
+
 		Historian.getInstance().recordLogin(true, false, conf.getClientIp(servletRequest));
-		User user = Users.getValidUser(attrs.get(getLoginAttributeIdentifier()));
+		User user = Users.getValidUser(username);
 		loginUser(user);
 		return getCookiePostResponse(user);
 	}
@@ -173,6 +191,17 @@ public class WebClientResource {
 
 		Map<AttributeIdentifier, String> attrs = parseApiServerJwt(apiServerJwt);
 		if (attrs == null) {
+			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
+		}
+
+		String emailaddress = attrs.get(getEmailAttributeIdentifier());
+		for (String altEmailAttribute : KeyshareConfiguration.getInstance().getAltEmailAttributes()) {
+			if (emailaddress == null) {
+				emailaddress = attrs.get(new AttributeIdentifier(altEmailAttribute));
+			}
+		}
+
+		if (emailaddress == null) {
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
 		}
 

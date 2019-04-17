@@ -11,6 +11,7 @@ import java.security.KeyManagementException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Map;
+import java.util.ArrayList;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfiguration> {
@@ -52,6 +53,9 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	private String email_attribute = "";
 	private String login_credential = "";
 	private String login_attribute = "";
+
+	private ArrayList<String> alt_email_attributes;
+	private ArrayList<String> alt_login_attributes;
 
 	private String defaultLanguage = "en";
 	private Map<String, String> login_email_subject;
@@ -160,6 +164,14 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	public String getLoginAttribute() {
 		return login_attribute;
+	}
+
+	public ArrayList<String> getAltEmailAttributes() {
+		return alt_email_attributes;
+	}
+
+	public ArrayList<String> getAltLoginAttributes() {
+		return alt_login_attributes;
 	}
 
 	public String getLoginEmailSubject(String lang) {
