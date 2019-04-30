@@ -35,10 +35,11 @@ public class BaseVerifier {
 	}
 
 	protected static String getSignedJWT(String key, Object object, String subject, int expiry) {
+		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
 		return Jwts.builder()
 				.setPayload(getJwtClaims(key, object, subject, expiry))
-				.signWith(KeyshareConfiguration.getInstance().getJwtAlgorithm(),
-						KeyshareConfiguration.getInstance().getJwtPrivateKey())
+				.setHeaderParam("kid", conf.getJwtKeyIdentifier())
+				.signWith(conf.getJwtAlgorithm(), conf.getJwtPrivateKey())
 				.compact();
 	}
 

@@ -31,6 +31,8 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	private String jwt_privatekey = "sk.der";
 	private String jwt_publickey = "pk.der";
 
+	private String jwt_kid = "0";
+
 	private int pinExpiry = 900; // 15 minutes
 
 	private String mail_user = "";
@@ -271,5 +273,9 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	public boolean goIrmaServer() {
 		return go_irma_server;
+	}
+
+	public String getJwtKeyIdentifier() {
+		return jwt_kid;
 	}
 }
