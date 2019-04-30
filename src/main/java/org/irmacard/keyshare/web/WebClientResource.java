@@ -491,7 +491,7 @@ public class WebClientResource {
 	}
 
 	private NewCookie newCookie(String key, String value) {
-		return new NewCookie(key, value, "/", null, null,
+		return new NewCookie(key, value, "/", KeyshareConfiguration.getInstance().getCookieDomain(), null,
 				KeyshareConfiguration.getInstance().getSessionTimeout()*60,
 				KeyshareConfiguration.getInstance().isHttpsEnabled());
 	}

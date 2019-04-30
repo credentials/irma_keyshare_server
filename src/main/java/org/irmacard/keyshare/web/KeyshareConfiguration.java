@@ -42,6 +42,7 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	private Map<String,String> webclient_url;
 	private String url = "http://localhost:8080/irma_keyshare_server/api/v1";
+	private String cookie_domain;
 
 	private String scheme_manager = "";
 	private String issuer = "";
@@ -129,6 +130,10 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	public String getUrl() {
 		return url;
+	}
+
+	public String getCookieDomain() {
+		return cookie_domain;
 	}
 
 	public String getSchemeManager() {
