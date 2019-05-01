@@ -37,7 +37,6 @@ import org.irmacard.credentials.idemix.info.IdemixKeyStore;
 import org.irmacard.credentials.idemix.info.IdemixKeyStoreDeserializer;
 import org.irmacard.credentials.info.DescriptionStore;
 import org.irmacard.credentials.info.DescriptionStoreDeserializer;
-import org.irmacard.credentials.info.InfoException;
 import org.irmacard.credentials.info.updater.Updater;
 import org.irmacard.keyshare.web.filters.DatabaseRequestFilter;
 import org.irmacard.keyshare.web.filters.DatabaseResponseFilter;
@@ -49,10 +48,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.ApplicationPath;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 @ApplicationPath("/")
