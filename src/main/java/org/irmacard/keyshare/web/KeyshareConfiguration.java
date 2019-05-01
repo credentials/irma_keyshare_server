@@ -58,8 +58,11 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	private Map<String, String> login_email_body;
 	private Map<String, String> confirm_email_body;
 	private Map<String, String> confirm_email_subject;
+	private Map<String, String> expire_email_subject;
 
 	private boolean check_user_enrolled = true;
+
+	private boolean unregister_expired_users = false;
 
 	private int session_timeout = 30;
 	private int rate_limit = 3;
@@ -178,6 +181,22 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 		return getTranslatedString(confirm_email_body, lang);
 	}
 
+	public String getExpireEmailSubject(String lang) {
+		return getTranslatedString(expire_email_subject, lang);
+	}
+
+	public String getExpireEmailBody(String lang) {
+		if (!"en".equals(lang) && !"nl".equals(lang))
+			lang = defaultLanguage;
+		String filename = "expire-email." + lang + ".html";
+		try {
+			return new String(getResource(filename));
+		} catch (Exception e) {
+			logger.error("Failed to read " + filename);
+			throw new RuntimeException(e);
+		}
+	}
+
 	private String getTranslatedString(Map<String, String> map, String lang) {
 		if (!map.containsKey(lang)) // TODO this is ugly, should keep track of supported languages
 			lang = defaultLanguage;
@@ -188,6 +207,8 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 	}
 
 	public boolean getCheckUserEnrolled() { return check_user_enrolled; }
+
+	public boolean getUnregisterExpiredUsers() { return unregister_expired_users; }
 
 	public int getSessionTimeout() {
 		return session_timeout;

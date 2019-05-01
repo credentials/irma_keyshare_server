@@ -52,6 +52,7 @@ public class User extends Model {
 	public static final String PINCOUNTER_FIELD = "pincounter";
 	public static final String PINBLOCK_DATE = "pinblockDate";
 	public static final String LANGUAGE_FIELD = "language";
+	public static final String EXPIRY_WARNING_FIELD = "expiryWarning";
 
 	public User(String username, String password, String pin, BigInteger secret, PublicKey publicKey, String language) {
 		if (!checkInput(pin, publicKey))

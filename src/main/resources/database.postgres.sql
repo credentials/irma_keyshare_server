@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS irma.users
     enrolled boolean,
     enabled boolean,
     email_issued boolean,
-    language varchar(256)
+    language varchar(256),
+    expiryWarning bigint
 );
 CREATE UNIQUE INDEX username_index ON irma.users (username);
 GRANT ALL PRIVILEGES ON TABLE irma.users TO irma;
