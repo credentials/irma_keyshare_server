@@ -82,6 +82,7 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
     String events_webhook_authorizationToken = null;
 
     String schemeManager_update_uri = null;
+    int schemeManager_update_interval = 60;
 
 	private String apiserver_url;
 	private String apiserver_pk;

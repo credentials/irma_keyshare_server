@@ -70,7 +70,7 @@ public class KeyshareApplication extends ResourceConfig {
                     @Override public void run() {
                         loadOrUpdateIrmaConfiguration(false);
                     }
-                }, 1, 1, TimeUnit.HOURS);
+                }, conf.schemeManager_update_interval, conf.schemeManager_update_interval, TimeUnit.MINUTES);
             }
         }
 
