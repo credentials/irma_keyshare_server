@@ -8,12 +8,15 @@
     // Issuer, credential names, and attribute names for issuing
     // These example values, together with scheme_manager, point to
     // test.test.mijnirma.email for the MyIRMA attribute associated to an account on this keyshare server
-    // test.test.email.email for the email attribute if and after the email account has been verified
     "issuer": "pbdf",
     "login_credential": "mijnirma",
     "login_attribute": "email",
-    "email_credential": "email",
-    "email_attribute": "email",
+
+	// Email attribute names trusted by this server for addition to MyIRMA
+    "email_attributes": ["pbdf.pbdf.email.email"],
+
+    // Alternative login attributes trusted for MyIRMA
+    "alt_login_attributes": []
 
     // URL and public key of the API server that issues and verifies IRMA attributes for this keyshare server
     // by irma_mobile during registrations and by the webclient
