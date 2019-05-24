@@ -49,12 +49,10 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 
 	private String scheme_manager = "";
 	private String issuer = "";
-	private String email_credential = "";
-	private String email_attribute = "";
 	private String login_credential = "";
 	private String login_attribute = "";
 
-	private ArrayList<String> alt_email_attributes;
+	private ArrayList<String> email_attributes;
 	private ArrayList<String> alt_login_attributes;
 
 	private String defaultLanguage = "en";
@@ -150,14 +148,6 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 		return issuer;
 	}
 
-	public String getEmailCredential() {
-		return email_credential;
-	}
-
-	public String getEmailAttribute() {
-		return email_attribute;
-	}
-
 	public String getLoginCredential() {
 		return login_credential;
 	}
@@ -166,8 +156,8 @@ public class KeyshareConfiguration extends BaseConfiguration<KeyshareConfigurati
 		return login_attribute;
 	}
 
-	public ArrayList<String> getAltEmailAttributes() {
-		return alt_email_attributes;
+	public ArrayList<String> getEmailAttributes() {
+		return email_attributes;
 	}
 
 	public ArrayList<String> getAltLoginAttributes() {

@@ -95,9 +95,8 @@ public class WebClientResource {
 	private String getEmailDisclosureJwt() {
 		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
 		AttributeDisjunctionList list = new AttributeDisjunctionList(1);
-		list.add(new AttributeDisjunction("Email address", getEmailAttributeIdentifier()));
-		for (String altEmailAttribute : KeyshareConfiguration.getInstance().getAltEmailAttributes()) {
-			list.get(0).add(new AttributeIdentifier(altEmailAttribute));
+		for (String emailAttribute : KeyshareConfiguration.getInstance().getEmailAttributes()) {
+			list.get(0).add(new AttributeIdentifier(emailAttribute));
 		}
 		return ApiClient.getDisclosureJWT(
 				list,
@@ -105,14 +104,6 @@ public class WebClientResource {
 				KeyshareConfiguration.getInstance().getHumanReadableName(),
 				KeyshareConfiguration.getInstance().getJwtAlgorithm(),
 				KeyshareConfiguration.getInstance().getJwtPrivateKey()
-		);
-	}
-
-	private AttributeIdentifier getEmailAttributeIdentifier() {
-		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
-		return new AttributeIdentifier(
-				new CredentialIdentifier(conf.getSchemeManager(), conf.getIssuer(), conf.getEmailCredential()),
-				conf.getEmailAttribute()
 		);
 	}
 
@@ -194,10 +185,10 @@ public class WebClientResource {
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
 		}
 
-		String emailaddress = attrs.get(getEmailAttributeIdentifier());
-		for (String altEmailAttribute : KeyshareConfiguration.getInstance().getAltEmailAttributes()) {
+		String emailaddress = null;
+		for (String emailAttribute : KeyshareConfiguration.getInstance().getEmailAttributes()) {
 			if (emailaddress == null) {
-				emailaddress = attrs.get(new AttributeIdentifier(altEmailAttribute));
+				emailaddress = attrs.get(new AttributeIdentifier(emailAttribute));
 			}
 		}
 
@@ -205,7 +196,7 @@ public class WebClientResource {
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT, "Invalid IRMA proof");
 		}
 
-		u.addEmailAddress(attrs.get(getEmailAttributeIdentifier()), true);
+		u.addEmailAddress(emailaddress, true);
 		return getCookiePostResponse(u);
 	}
 
@@ -219,68 +210,6 @@ public class WebClientResource {
 			return null;
 		u.removeEmailAddress(email);
 		return getCookiePostResponse(u);
-	}
-
-	@POST
-	@Path("/users/{user_id}/email_issued")
-	public Response setEmailAddressIssued(@PathParam("user_id") int userID,
-	                                      @CookieParam("sessionid") String sessionid) {
-		User u = Users.getLoggedInUser(userID, sessionid);
-		if(u == null)
-			return null;
-		u.setEmailAddressIssued();
-		return getCookiePostResponse(u);
-	}
-
-	@GET
-	@Path("/users/{user_id}/issue_email")
-	@Produces(MediaType.TEXT_PLAIN)
-	@RateLimit
-	public String getEmailIssuanceJwt(@PathParam("user_id") int userID,
-	                                  @CookieParam("sessionid") String sessionid) {
-		User u = Users.getLoggedInUser(userID, sessionid);
-		if(u == null || u.getEmailAddressIssued() || u.getEmailAddresses().size() == 0)
-			// TODO some error message in case of the latter two conditions?
-			return null;
-
-		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
-		ArrayList<CredentialRequest> credentials = new ArrayList<>(2);
-		HashMap<String,String> attrs = new HashMap<>(1);
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.YEAR, 1);
-		int time = (int) CredentialRequest.floorValidityDate(calendar.getTimeInMillis(), true);
-		String email = u.getEmailAddresses().get(0).get();
-
-		attrs.put(conf.getEmailAttribute(), email);
-		credentials.add(new CredentialRequest(
-				time, new CredentialIdentifier(
-						conf.getSchemeManager(),
-						conf.getIssuer(),
-						conf.getEmailCredential()
-				),
-				attrs
-		));
-		if (u.old()) {
-			// In this case the MyIRMA credential has not been auto-issued
-			attrs.clear();
-			attrs.put(conf.getLoginAttribute(), email);
-			credentials.add(new CredentialRequest(
-					time, new CredentialIdentifier(
-							conf.getSchemeManager(),
-							conf.getIssuer(),
-							conf.getLoginCredential()
-					),
-					attrs
-			));
-		}
-
-		IdentityProviderRequest ipRequest = new IdentityProviderRequest("", new IssuingRequest(null, null, credentials), 120);
-		return ApiClient.getSignedIssuingJWT(ipRequest,
-				conf.getServerName(),
-				conf.getHumanReadableName(),
-				conf.getJwtAlgorithm(),
-				conf.getJwtPrivateKey()
-		);
 	}
 
 	@POST
