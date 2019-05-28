@@ -1,6 +1,5 @@
 package org.irmacard.keyshare.web.users;
 
-import de.henku.jpaillier.PublicKey;
 import org.irmacard.api.common.util.GsonUtil;
 import org.irmacard.credentials.idemix.proofs.ProofP;
 import org.irmacard.credentials.idemix.proofs.ProofPCommitmentMap;
@@ -37,7 +36,6 @@ public class User extends Model {
 	private static final int BACKOFF_START = 1;
 
 	private transient ProofPListBuilder pbuilder = null;
-	private transient PublicKey publicKey;
 
 	public static final String USERNAME_FIELD = "username";
 	public static final String PASSWORD_FIELD = "password";
@@ -53,8 +51,8 @@ public class User extends Model {
 	public static final String PINBLOCK_DATE = "pinblockDate";
 	public static final String LANGUAGE_FIELD = "language";
 
-	public User(String username, String password, String pin, BigInteger secret, PublicKey publicKey, String language) {
-		if (!checkInput(pin, publicKey))
+	public User(String username, String password, String pin, BigInteger secret, String language) {
+		if (!checkInput(pin))
 			throw new KeyshareException(KeyshareError.MALFORMED_INPUT);
 
 		setString(USERNAME_FIELD, username);
@@ -64,27 +62,22 @@ public class User extends Model {
 		setInteger(PINCOUNTER_FIELD, 0);
 		setString(KEYSHARE_FIELD, secret.toString(16));
 
-		setString(PUBLICKEY_FIELD, GsonUtil.getGson().toJson(publicKey));
-		this.publicKey = publicKey;
-
 		setBoolean(ENROLLED_FIELD, false);
 		setBoolean(ENABLED_FIELD, true);
 		setBoolean(EMAILISSUED_FIELD, false);
 		saveIt();
 	}
 
-	private boolean checkInput(String pin, PublicKey publicKey) {
-		return (publicKey == null || (publicKey.getN() != null && publicKey.getG() != null))
-				&& pin != null
-				&& pin.length() > 44; // Length of SHA256 in Base64 plus =\n
+	private boolean checkInput(String pin) {
+		return pin != null && pin.length() > 44; // Length of SHA256 in Base64 plus =\n
 	}
 
-	public User(String username, String password, String pin, PublicKey publicKey, String language) {
-		this(username, password, pin, new BigInteger(255, new SecureRandom()), publicKey, language);
+	public User(String username, String password, String pin, String language) {
+		this(username, password, pin, new BigInteger(255, new SecureRandom()), language);
 	}
 
 	public User(UserLoginMessage user) {
-		this(user.getUsername(), user.getPassword(), user.getPin(), user.getPublicKey(), user.getLanguage());
+		this(user.getUsername(), user.getPassword(), user.getPin(), user.getLanguage());
 	}
 
 	public User() {}
@@ -147,13 +140,6 @@ public class User extends Model {
 
 	public void setEnrolled(boolean enrolled) {
 		setBoolean(ENROLLED_FIELD, enrolled);
-	}
-
-	public PublicKey getPublicKey() {
-		if (publicKey == null)
-			publicKey = GsonUtil.getGson().fromJson(getString(PUBLICKEY_FIELD), PublicKey.class);
-
-		return publicKey;
 	}
 
 	public UserMessage getAsMessage() {
@@ -223,11 +209,11 @@ public class User extends Model {
 			throw new KeyshareException(KeyshareError.UNEXPECTED_REQUEST);
 		}
 
-		if (challenge.bitLength() > 256 && (getPublicKey() == null || challenge.bitLength() <=2000)) {
+		if (challenge.bitLength() > 256) {
 			throw new KeyshareException(KeyshareError.MALFORMED_KEYSHARE_REQUEST);
 		}
 
-		ProofP proof = pbuilder.build(challenge, getPublicKey());
+		ProofP proof = pbuilder.build(challenge, null);
 
 		// Ensure that we can only answer one challenge (lest we totally break security)
 		pbuilder = null;
