@@ -44,8 +44,6 @@ dependencies {
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
 
     // Database connections
-    gretty 'commons-dbcp:commons-dbcp:1.4'
-    compile 'commons-dbcp:commons-dbcp:1.4'
     compile 'org.javalite:activejdbc:2.2'
     compile 'net.glxn:qrgen:1.4'
     compile 'mysql:mysql-connector-java:8.0.16'
