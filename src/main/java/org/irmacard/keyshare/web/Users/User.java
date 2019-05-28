@@ -161,7 +161,7 @@ public class User extends Model {
 	}
 
 	public String getPIN() {
-		return getString(PIN_FIELD);
+		return getString(PIN_FIELD).replace("\\n", "\n");
 	}
 
 	public void setPIN(String newPin) {
