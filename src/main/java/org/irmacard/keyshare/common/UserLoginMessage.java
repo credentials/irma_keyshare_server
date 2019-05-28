@@ -15,12 +15,6 @@ public class UserLoginMessage {
 		this.pin = pin;
 	}
 
-	public UserLoginMessage(String username, String password, String pin) {
-		this.username = username;
-		this.password = password;
-		this.pin = pin;
-	}
-
 	public String getUsername() {
 		return username;
 	}
