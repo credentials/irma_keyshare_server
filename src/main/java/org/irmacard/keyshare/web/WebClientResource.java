@@ -409,9 +409,12 @@ public class WebClientResource {
 			loginUser(u);
 
 		Response.ResponseBuilder builder = null;
-		if (!isWebclient)
-			builder = Response.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl(u.getLanguage())));
-		else {
+		if (!isWebclient) {
+			String language = ""; // Force default if no user
+			if (u != null)
+				language = u.getLanguage();
+			builder = Response.temporaryRedirect(new URI(KeyshareConfiguration.getInstance().getWebclientUrl(language)));
+		} else {
 			if (success)
 				builder = Response.ok("OK");
 			else
