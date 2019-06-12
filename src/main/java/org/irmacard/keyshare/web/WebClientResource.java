@@ -328,6 +328,7 @@ public class WebClientResource {
 			Historian.getInstance().recordLogin(false, true, conf.getClientIp(servletRequest));
 			return Response.status(Response.Status.NOT_FOUND).build(); // TODO this should also redirect
 		}
+		record.setVerified();
 		u.addEmailAddress(record.getEmail(), true);
 		loginUser(u);
 		Historian.getInstance().recordLogin(true, true, conf.getClientIp(servletRequest));
