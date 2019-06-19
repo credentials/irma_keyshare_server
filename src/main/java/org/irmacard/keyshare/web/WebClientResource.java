@@ -144,9 +144,9 @@ public class WebClientResource {
 
 		String username = attrs.get(getLoginAttributeIdentifier());
 		for (String altLoginAttribute : KeyshareConfiguration.getInstance().getAltLoginAttributes()) {
-			if (username == null) {
-				username = attrs.get(new AttributeIdentifier(altLoginAttribute));
-			}
+			if (username != null)
+				break; // One is enough, so early exit (must be here to deal with initialization)
+			username = attrs.get(new AttributeIdentifier(altLoginAttribute));
 		}
 
 		if (username == null) {
@@ -187,9 +187,9 @@ public class WebClientResource {
 
 		String emailaddress = null;
 		for (String emailAttribute : KeyshareConfiguration.getInstance().getEmailAttributes()) {
-			if (emailaddress == null) {
-				emailaddress = attrs.get(new AttributeIdentifier(emailAttribute));
-			}
+			emailaddress = attrs.get(new AttributeIdentifier(emailAttribute));
+			if (emailaddress != null)
+				break; // One is enough, so early exit.
 		}
 
 		if (emailaddress == null) {
