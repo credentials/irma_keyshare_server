@@ -78,6 +78,12 @@
         "en": "Dear IRMA user,\n\nWelcome to IRMA! Your have successfully opened your IRMA account. Confirm your email address by clicking on the link below, in order to receive this e-mailadres as an attribute in your IRMA-app. Additionally, you can then login on MyIRMA and block your attriutes, in case you lose your phone.",
         "nl": "Beste IRMA-gebruiker,\n\nWelkom bij IRMA! U heeft uw IRMA account geopend. Bevestig uw e-mailadres door op onderstaande link te klikken. U ontvangt dit e-mailadres dan als attribuut in uw IRMA-app. U kunt dan bovendien met dit e-mailadres op MijnIRMA inloggen om uw attributen te blokkeren, mocht u uw telefoon kwijtraken."
     },
+    "expire_email_subject": {
+        "en": "Reactivate your IRMA account to prevent expiry",
+        "nl": "Reactiveer uw IRMA account om te voorkomen dat deze verloopt"
+    },
+
+    "unregister_expired_users": true,
 
     // Expiry for the pin JWT (i.e., how long a user stays authenticated
     // without having to enter her pin)
