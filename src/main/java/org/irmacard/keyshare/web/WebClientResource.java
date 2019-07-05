@@ -350,8 +350,11 @@ public class WebClientResource {
 			return getMultipleCandidatesRedirectResponse(token);
 
 		record.setVerified(); // This token is now consumed
-		if (size > 1) { // a username was specified, look it up
-			u = User.findFirst(User.USERNAME_FIELD + " = ?", username);
+		if (size > 1) { // a username was specified, look it up (in the allowed list!)
+			for (EmailAddress cand : candidates) {
+				if (cand.parent(User.class).getUsername().equals(username))
+					u = cand.parent(User.class);
+			}
 		}
 		else if (size == 1) { // Only one user has this email address, just login the user immediately
 			u = candidates.get(0).parent(User.class);
