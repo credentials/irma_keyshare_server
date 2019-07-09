@@ -95,6 +95,7 @@ public class WebClientResource {
 	private String getEmailDisclosureJwt() {
 		KeyshareConfiguration conf = KeyshareConfiguration.getInstance();
 		AttributeDisjunctionList list = new AttributeDisjunctionList(1);
+		list.add(new AttributeDisjunction("Email"));
 		for (String emailAttribute : KeyshareConfiguration.getInstance().getEmailAttributes()) {
 			list.get(0).add(new AttributeIdentifier(emailAttribute));
 		}
