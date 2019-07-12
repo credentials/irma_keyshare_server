@@ -46,12 +46,10 @@ import org.javalite.activejdbc.Base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.ApplicationPath;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-@ApplicationPath("/")
 public class KeyshareApplication extends ResourceConfig {
     private static Logger logger = LoggerFactory.getLogger(KeyshareApplication.class);
 
