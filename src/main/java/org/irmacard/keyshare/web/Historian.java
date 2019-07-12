@@ -232,7 +232,7 @@ public class Historian implements Runnable {
 
     public void enable(String uri, String authorizationToken) {
         if (enabled) {
-            throw new IllegalStateException("Already enabled");
+            return;
         }
 
         this.enabled = true;
