@@ -277,7 +277,7 @@ public class WebClientResource {
 		EmailVerificationRecord record = EmailVerifier.findRecord(token);
 		if (record == null) {
 			Historian.getInstance().recordLogin(false, true, conf.getClientIp(servletRequest));
-			return Response.status(Response.Status.NOT_FOUND).build(); // TODO this should also redirect
+			return finishLogin(null, false);
 		}
 
 		// In case of enrollment, the email verification record should have a user_id parent
@@ -285,7 +285,7 @@ public class WebClientResource {
 		User u = record.parent(User.class);
 		if (u == null) {
 			Historian.getInstance().recordLogin(false, true, conf.getClientIp(servletRequest));
-			return Response.status(Response.Status.NOT_FOUND).build(); // TODO this should also redirect
+			return finishLogin(null, false);
 		}
 		record.setVerified();
 		u.addEmailAddress(record.getEmail(), true);
