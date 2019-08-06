@@ -63,8 +63,9 @@ public class EmailVerifier {
 		// An email verification link should work only once,
 		// so we check if time_verified has been set before.
 		List<EmailVerificationRecord> list = EmailVerificationRecord.find(
-				"token = ? AND time_verified IS NULL AND time_created + timeout > ?",
+				"token = ? AND (time_verified IS NULL OR time_verified + 5*60 > ?) AND time_created + timeout > ?",
 				token,
+				System.currentTimeMillis() / 1000,
 				System.currentTimeMillis() / 1000
 		).include(User.class);
 		if (list.size() == 0)
