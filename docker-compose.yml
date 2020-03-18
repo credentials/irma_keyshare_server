@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    container_name: irma_keyshare_db
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./src/main/resources/database.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      MYSQL_USER: irma
+      MYSQL_PASSWORD: irma
+      MYSQL_ROOT_PASSWORD: irma
+      MYSQL_DATABASE: irma_keyshare
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    container_name: keyshare_web
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    links:
+      - db
+    depends_on:
+      - db
