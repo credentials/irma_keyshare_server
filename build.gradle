@@ -60,4 +60,8 @@ gretty {
     scanInterval = 10
     inplaceMode = "hard"
     httpsEnabled = true
+    dependencies {
+        gretty 'mysql:mysql-connector-java:8.0.16'
+        gretty 'org.apache.commons:commons-dbcp2:2.7.0'
+    }
 }
