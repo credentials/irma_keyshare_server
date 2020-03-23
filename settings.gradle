@@ -1,0 +1,10 @@
+sourceControl {
+    gitRepository("https://github.com/privacybydesign/irma_api_common.git") {
+        producesModule("org.irmacard.api:irma_api_common")
+    }
+}
+sourceControl {
+    gitRepository("https://github.com/robbyronk/irma_server_common.git") {
+        producesModule("foundation.privacybydesign.common:irma_server_common")
+    }
+}
