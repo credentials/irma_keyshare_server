@@ -6,10 +6,12 @@ RUN apt-get update && \
     apt-get clean
 RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
-WORKDIR /app
+WORKDIR /irma_keyshare_server
 
-COPY src /app/src
-COPY build.gradle /app
+COPY src /irma_keyshare_server/src
+COPY gradle /irma_keyshare_server/gradle
+COPY gradlew /irma_keyshare_server
+COPY gradlew.bat /irma_keyshare_server
+COPY build.gradle /irma_keyshare_server
 
-RUN gradle wrapper
 CMD ["./gradlew", "appRun", "--no-daemon",  "--no-parallel"]
