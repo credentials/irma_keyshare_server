@@ -18,6 +18,8 @@ services:
       context: .
       dockerfile: ./docker/web/Dockerfile
     container_name: keyshare_web
+    stdin_open: true
+    tty: true
     restart: unless-stopped
     ports:
       - '8080:8080'
