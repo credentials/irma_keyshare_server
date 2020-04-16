@@ -16,7 +16,7 @@
     "email_attributes": ["pbdf.pbdf.email.email"],
 
     // Alternative login attributes trusted for MyIRMA
-    "alt_login_attributes": []
+    "alt_login_attributes": [],
 
     // URL and public key of the API server that issues and verifies IRMA attributes for this keyshare server
     // by irma_mobile during registrations and by the webclient
