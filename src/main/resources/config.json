@@ -15,7 +15,7 @@
     "mail_user": "",
     "mail_password": "",
     "mail_from": "test@test.com",
-    "mail_host": "127.0.0.1",
+    "mail_host": "mail",
     "mail_port": "1025",
     "mail_starttls_required": "false",
     "url": "http://localhost:8080/irma_keyshare_server/api/v1",
